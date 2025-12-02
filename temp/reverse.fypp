@@ -1,0 +1,35 @@
+  #:for HISTORY_FLAG in HISTORY_FLAGS
+  #:mute
+  #:if HISTORY_FLAG
+  #:  set HISTORY_SUFFIX = '_hist'
+  #:  set HISTORY_INTENT = 'integer(DEFAULT_INT), intent(inout) :: history(:)'
+  #:  set HISTORY_ARG = ', history'
+  #:else
+  #:  set HISTORY_SUFFIX = ''
+  #:  set HISTORY_INTENT = ''
+  #:  set HISTORY_ARG = ''
+  #:endif
+  #:endmute
+  #:for KIND_SUFFIX, ARRAY_TYPE in IR_KINDS_TYPES
+  subroutine reverse_${KIND_SUFFIX}$${HISTORY_SUFFIX}$(arr${HISTORY_ARG}$)
+    implicit none
+    ${ARRAY_TYPE}$, intent(inout) :: arr(:)
+    ${HISTORY_INTENT}$
+    integer :: l, r
+    ${ARRAY_TYPE}$ :: temp
+    #{if HISTORY_FLAG}#integer(DEFAULT_INT) :: temp_hist#{endif}#
+    integer :: i
+    l = lbound(arr, 1); r = ubound(arr, 1)
+    do i = l, (r + l) / 2
+      temp = arr(i)
+      arr(i) = arr(r + l - i)
+      arr(r + l - i) = temp
+      #:if HISTORY_FLAG
+      temp_hist = history(i)
+      history(i) = history(r + l - i)
+      history(r + l - i) = temp_hist
+      #:endif
+    end do
+  end subroutine reverse_${KIND_SUFFIX}$${HISTORY_SUFFIX}$
+  #:endfor
+  #:endfor

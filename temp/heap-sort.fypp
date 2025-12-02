@@ -1,0 +1,139 @@
+#:include "common.fypp"
+#ifndef DEFAULT_INT
+#  define DEFAULT_INT int32
+#endif
+#ifndef DEFAULT_REAL
+#  define DEFAULT_REAL real64
+#endif
+
+! #define IS_LARGE_ARRAY
+
+module heap_sort_mod
+  use, intrinsic :: iso_fortran_env
+  implicit none
+  integer(DEFAULT_INT), parameter :: short = int16, long = int32, llong = int64, sp = real32, dp = real64, qp = real128
+
+  character(len=*), parameter :: SORTING_METHOD = 'Heap Sort'
+  private
+  public :: SORTING_METHOD
+
+  interface sort
+  #:for HISTORY_FLAG in HISTORY_FLAGS
+  #:if HISTORY_FLAG
+  #:  set HISTORY_SUFFIX = '_hist'
+  #:else
+  #:  set HISTORY_SUFFIX = ''
+  #:endif
+  #:for KIND in IR_KINDS
+    module procedure hsort_${KIND}$${HISTORY_SUFFIX}$
+  #:endfor
+  #:endfor
+  end interface sort
+
+  interface reverse
+  #:for HISTORY_FLAG in HISTORY_FLAGS
+  #:if HISTORY_FLAG
+  #:  set HISTORY_SUFFIX = '_hist'
+  #:else
+  #:  set HISTORY_SUFFIX = ''
+  #:endif
+  #:for KIND in IR_KINDS
+    module procedure reverse_${KIND}$${HISTORY_SUFFIX}$
+  #:endfor
+  #:endfor
+  end interface reverse
+  public :: sort, reverse
+
+contains
+
+  #:for HISTORY_FLAG in HISTORY_FLAGS
+  #:if HISTORY_FLAG
+  #:  set HISTORY_SUFFIX = '_hist'
+  #:  set HISTORY_INTENT = 'integer(DEFAULT_INT), intent(inout) :: history(:)'
+  #:  set HISTORY_ARG = ', history'
+  #:else
+  #:  set HISTORY_SUFFIX = ''
+  #:  set HISTORY_INTENT = ''
+  #:  set HISTORY_ARG = ''
+  #:endif
+  #:for KIND_SUFFIX, ARRAY_TYPE in IR_KINDS_TYPES
+  subroutine hsort_${KIND_SUFFIX}$${HISTORY_SUFFIX}$(arr${HISTORY_ARG}$, reverse)
+    implicit none
+    ${ARRAY_TYPE}$, intent(inout) :: arr(:)
+    ${HISTORY_INTENT}$
+    logical, intent(in), optional :: reverse
+
+    call hsort_recurs_${KIND_SUFFIX}$${HISTORY_SUFFIX}$(arr, 1, size(arr)${HISTORY_ARG}$)
+
+    if (present(reverse)) then
+      if (reverse) then
+        call reverse_${KIND_SUFFIX}$${HISTORY_SUFFIX}$(arr${HISTORY_ARG}$)
+      end if
+    end if
+  end subroutine hsort_${KIND_SUFFIX}$${HISTORY_SUFFIX}$
+
+  recursive subroutine hsort_recurs_${KIND_SUFFIX}$${HISTORY_SUFFIX}$(arr, left, right${HISTORY_ARG}$)
+    implicit none
+    ${ARRAY_TYPE}$, intent(inout) :: arr(:)
+    integer(DEFAULT_INT), intent(in) :: left, right
+    ${HISTORY_INTENT}$
+    integer(DEFAULT_INT) :: i, n
+
+    n = right - left + 1
+    if (n <= 1) return
+
+    ! Build heap (rearrange array)
+    do i = n / 2, 1, -1
+      call sift_down(i, n)
+    end do
+
+    ! One by one extract an element from heap
+    do i = n, 2, -1
+      ! Move current root to end
+      call swap_${KIND_SUFFIX}$${HISTORY_SUFFIX}$(arr, left, left + i - 1${HISTORY_ARG}$)
+
+      ! call max heapify on the reduced heap
+      call sift_down(1_DEFAULT_INT, i - 1)
+    end do
+
+  contains
+    subroutine sift_down(start_node, end_node)
+      integer(DEFAULT_INT), intent(in) :: start_node, end_node
+      integer(DEFAULT_INT) :: root, child, swap_idx
+
+      root = start_node
+
+      do while (2 * root <= end_node)
+        child = 2 * root
+        swap_idx = root
+
+        if (arr(left + swap_idx - 1) < arr(left + child - 1)) then
+          swap_idx = child
+        end if
+
+        if (child + 1 <= end_node) then
+          if (arr(left + swap_idx - 1) < arr(left + child)) then
+            swap_idx = child + 1
+          end if
+        end if
+
+        if (swap_idx == root) then
+          return
+        else
+          call swap_${KIND_SUFFIX}$${HISTORY_SUFFIX}$(arr, left + root - 1, left + swap_idx - 1${HISTORY_ARG}$)
+          root = swap_idx
+        end if
+      end do
+    end subroutine sift_down
+
+  end subroutine hsort_recurs_${KIND_SUFFIX}$${HISTORY_SUFFIX}$
+
+  #:endfor
+  #:endfor
+
+  #!> swap
+  #:include "swap.fypp"
+
+  #!> reverse
+  #:include "reverse.fypp"
+end module heap_sort_mod
