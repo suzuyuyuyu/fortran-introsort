@@ -1,0 +1,50 @@
+  #:for HISTORY_FLAG in HISTORY_FLAGS
+  #:mute
+  #:if HISTORY_FLAG
+  #:  set HISTORY_SUFFIX = '_hist'
+  #:  set HISTORY_INTENT = 'integer(DEFAULT_INT), intent(inout) :: history(:)'
+  #:  set HISTORY_ARG = ', history'
+  #:else
+  #:  set HISTORY_SUFFIX = ''
+  #:  set HISTORY_INTENT = ''
+  #:  set HISTORY_ARG = ''
+  #:endif
+  #:endmute
+  #:for KIND_SUFFIX, ARRAY_TYPE in IR_KINDS_TYPES
+  subroutine bisort_${KIND_SUFFIX}$${HISTORY_SUFFIX}$(arr${HISTORY_ARG}$)
+    implicit none
+    ${ARRAY_TYPE}$, intent(inout) :: arr(:)
+    integer(DEFAULT_INT) :: l, r
+    ${HISTORY_INTENT}$
+    ${ARRAY_TYPE}$ :: key
+    integer(DEFAULT_INT) :: i, j
+    integer(DEFAULT_INT) :: low, high, mid, loc
+
+    l = lbound(arr, 1); r = ubound(arr, 1)
+    do i = l + 1, r
+      key = arr(i)
+      low = l
+      high = i - 1
+
+      #! Binary search to find insertion location 'loc'
+      do while (low <= high)
+        mid = low + (high - low) / 2
+        if (key < arr(mid)) then
+          high = mid - 1
+        else
+          low = mid + 1
+        end if
+      end do
+      loc = low
+
+      #! Shift elements to make space for the key
+      do j = i - 1, loc, -1
+        arr(j + 1) = arr(j)
+        #{if HISTORY_FLAG}#history(j + 1) = history(j)#{endif}#
+      end do
+      arr(loc) = key
+      #{if HISTORY_FLAG}#history(loc) = i#{endif}#
+    end do
+  end subroutine bisort_${KIND_SUFFIX}$${HISTORY_SUFFIX}$
+  #:endfor
+  #:endfor

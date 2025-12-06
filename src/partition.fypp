@@ -1,0 +1,41 @@
+  #:for HISTORY_FLAG in HISTORY_FLAGS
+  #:mute
+  #:if HISTORY_FLAG
+  #:  set HISTORY_SUFFIX = '_hist'
+  #:  set HISTORY_INTENT = 'integer(DEFAULT_INT), intent(inout) :: history(:)'
+  #:  set HISTORY_ARG = ', history'
+  #:else
+  #:  set HISTORY_SUFFIX = ''
+  #:  set HISTORY_INTENT = ''
+  #:  set HISTORY_ARG = ''
+  #:endif
+  #:endmute
+  #:for KIND_SUFFIX, ARRAY_TYPE in IR_KINDS_TYPES
+  function partition_${KIND_SUFFIX}$${HISTORY_SUFFIX}$(arr, l, r, pivot${HISTORY_ARG}$) result(new_pivot_idx)
+    implicit none
+    ${ARRAY_TYPE}$, intent(inout) :: arr(:)
+    ${HISTORY_INTENT}$
+    integer(DEFAULT_INT), intent(in) :: l, r
+    ${ARRAY_TYPE}$, intent(in) :: pivot
+    integer(DEFAULT_INT) :: i, j
+    integer(DEFAULT_INT) :: new_pivot_idx
+
+    i = l; j = r
+    do while (.true.)
+      do while (arr(i) < pivot)
+        i = i + 1
+      end do
+      do while (arr(j) > pivot)
+        j = j - 1
+      end do
+      if (i >= j) exit
+
+      call swap_${KIND_SUFFIX}$${HISTORY_SUFFIX}$(arr, i, j${HISTORY_ARG}$)
+      i = i + 1
+      j = j - 1
+    end do
+
+    new_pivot_idx = j
+  end function partition_${KIND_SUFFIX}$${HISTORY_SUFFIX}$
+  #:endfor
+  #:endfor

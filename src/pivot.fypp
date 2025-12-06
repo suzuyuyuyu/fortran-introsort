@@ -1,0 +1,84 @@
+  #:for KIND_SUFFIX, ARRAY_TYPE in IR_KINDS_TYPES
+  ! Median-of-Three
+  pure function median_of_three_pivot_${KIND_SUFFIX}$(arr, left, right) result(pivot_idx)
+    ${ARRAY_TYPE}$, intent(in) :: arr(:)
+    integer, intent(in) :: left, right
+    integer :: pivot_idx, mid
+    ${ARRAY_TYPE}$ :: a, b, c
+
+    mid = left + (right - left) / 2
+
+    a = arr(left)
+    b = arr(mid)
+    c = arr(right)
+
+    if (a <= b) then
+      if (b <= c) then
+        pivot_idx = mid
+      else if (a <= c) then
+        pivot_idx = right
+      else
+        pivot_idx = left
+      end if
+    else
+      if (a <= c) then
+        pivot_idx = left
+      else if (b <= c) then
+        pivot_idx = right
+      else
+        pivot_idx = mid
+      end if
+    end if
+
+  end function median_of_three_pivot_${KIND_SUFFIX}$
+
+  ! Tukey's Ninther for the large arrays
+  pure function tukeys_ninther_pivot_${KIND_SUFFIX}$(arr, left, right) result(pivot_idx)
+    ${ARRAY_TYPE}$, intent(in) :: arr(:)
+    integer, intent(in) :: left, right
+    integer :: pivot_idx, n, third
+    integer :: m1, m2, m3
+
+    n = right - left + 1
+    third = n / 3
+
+    ! Divide the array into three parts and find the median of three in each part
+    m1 = median_of_three_idx_${KIND_SUFFIX}$(arr, left, left + third/2, left + third)
+    m2 = median_of_three_idx_${KIND_SUFFIX}$(arr, left + third, left + third + third/2, left + 2*third)
+    m3 = median_of_three_idx_${KIND_SUFFIX}$(arr, left + 2*third, left + 2*third + (n - 2*third)/2, right)
+
+    ! Find the median of the three medians
+    pivot_idx = median_of_three_idx_${KIND_SUFFIX}$(arr, m1, m2, m3)
+
+  end function tukeys_ninther_pivot_${KIND_SUFFIX}$
+
+  ! Helper function: returns the index of the median of three indices
+  pure function median_of_three_idx_${KIND_SUFFIX}$(arr, i, j, k) result(idx)
+    ${ARRAY_TYPE}$, intent(in) :: arr(:)
+    integer, intent(in) :: i, j, k
+    integer :: idx
+    ${ARRAY_TYPE}$ :: a, b, c
+
+    a = arr(i)
+    b = arr(j)
+    c = arr(k)
+
+    if (a <= b) then
+      if (b <= c) then
+        idx = j
+      else if (a <= c) then
+        idx = k
+      else
+        idx = i
+      end if
+    else
+      if (a <= c) then
+        idx = i
+      else if (b <= c) then
+        idx = k
+      else
+        idx = j
+      end if
+    end if
+  end function median_of_three_idx_${KIND_SUFFIX}$
+  #:endfor

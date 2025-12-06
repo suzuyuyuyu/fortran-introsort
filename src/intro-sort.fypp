@@ -1,0 +1,138 @@
+#:include "common.fypp"
+#ifndef DEFAULT_INT
+#  define DEFAULT_INT int32
+#endif
+#ifndef DEFAULT_REAL
+#  define DEFAULT_REAL real64
+#endif
+
+! #define IS_LARGE_ARRAY
+
+module intro_sort_mod
+  use, intrinsic :: iso_fortran_env
+  implicit none
+  integer(DEFAULT_INT), parameter :: short = int16, long = int32, llong = int64, sp = real32, dp = real64, qp = real128
+
+  character(len=*), parameter :: SORTING_METHOD = 'Intro Sort'
+  private
+  public :: SORTING_METHOD
+
+  interface sort
+  #:for HISTORY_FLAG in HISTORY_FLAGS
+  #:if HISTORY_FLAG
+  #:  set HISTORY_SUFFIX = '_hist'
+  #:else
+  #:  set HISTORY_SUFFIX = ''
+  #:endif
+  #:for KIND in IR_KINDS
+    module procedure introsort_${KIND}$${HISTORY_SUFFIX}$
+  #:endfor
+  #:endfor
+  end interface sort
+
+  interface reverse
+  #:for HISTORY_FLAG in HISTORY_FLAGS
+  #:if HISTORY_FLAG
+  #:  set HISTORY_SUFFIX = '_hist'
+  #:else
+  #:  set HISTORY_SUFFIX = ''
+  #:endif
+  #:for KIND in IR_KINDS
+    module procedure reverse_${KIND}$${HISTORY_SUFFIX}$
+  #:endfor
+  #:endfor
+  end interface reverse
+  public :: sort, reverse
+
+  integer(DEFAULT_INT) :: max_depth
+
+contains
+
+  #:for HISTORY_FLAG in HISTORY_FLAGS
+  #:if HISTORY_FLAG
+  #:  set HISTORY_SUFFIX = '_hist'
+  #:  set HISTORY_INTENT = 'integer(DEFAULT_INT), intent(inout) :: history(:)'
+  #:  set HISTORY_ARG = ', history'
+  #:else
+  #:  set HISTORY_SUFFIX = ''
+  #:  set HISTORY_INTENT = ''
+  #:  set HISTORY_ARG = ''
+  #:endif
+  #:for KIND_SUFFIX, ARRAY_TYPE in IR_KINDS_TYPES
+  subroutine introsort_${KIND_SUFFIX}$${HISTORY_SUFFIX}$(arr${HISTORY_ARG}$, reverse)
+    implicit none
+    ${ARRAY_TYPE}$, intent(inout) :: arr(:)
+    ${HISTORY_INTENT}$
+    logical, intent(in), optional :: reverse
+
+    max_depth = 2 * ceiling(log(real(size(arr), kind=DEFAULT_REAL)) / log(2.0_real64))
+
+    call introsort_recurs_${KIND_SUFFIX}$${HISTORY_SUFFIX}$(arr, 1, size(arr), 1${HISTORY_ARG}$)
+
+    if (present(reverse)) then
+      if (reverse) then
+        call reverse_${KIND_SUFFIX}$${HISTORY_SUFFIX}$(arr${HISTORY_ARG}$)
+      end if
+    end if
+  end subroutine introsort_${KIND_SUFFIX}$${HISTORY_SUFFIX}$
+
+  recursive subroutine introsort_recurs_${KIND_SUFFIX}$${HISTORY_SUFFIX}$(arr, left, right, depth${HISTORY_ARG}$)
+    implicit none
+    ${ARRAY_TYPE}$, intent(inout) :: arr(:)
+    integer(DEFAULT_INT), intent(in) :: left, right
+    integer(DEFAULT_INT), intent(in) :: depth
+    ${HISTORY_INTENT}$
+    integer(DEFAULT_INT) :: mid
+    integer(DEFAULT_INT) :: pivot_idx
+
+    if (right - left + 1 <= 16) then
+      call bisort_${KIND_SUFFIX}$${HISTORY_SUFFIX}$(arr(left:right)${HISTORY_ARG}$)
+      return
+    end if
+
+    if (depth >= max_depth) then
+      call hsort_${KIND_SUFFIX}$${HISTORY_SUFFIX}$(arr(left:right)${HISTORY_ARG}$)
+      return
+    end if
+
+
+    if (left < right) then
+#     ifdef IS_LARGE_ARRAY
+      pivot_idx = tukeys_ninther_pivot_${KIND_SUFFIX}$(arr, left, right)
+#     else
+      pivot_idx = median_of_three_pivot_${KIND_SUFFIX}$(arr, left, right)
+#     endif
+
+      mid = partition_${KIND_SUFFIX}$${HISTORY_SUFFIX}$(arr, left, right, arr(pivot_idx)${HISTORY_ARG}$)
+
+      call introsort_recurs_${KIND_SUFFIX}$${HISTORY_SUFFIX}$(arr, left, mid, depth + 1${HISTORY_ARG}$)
+      call introsort_recurs_${KIND_SUFFIX}$${HISTORY_SUFFIX}$(arr, mid + 1, right, depth + 1${HISTORY_ARG}$)
+    end if
+  end subroutine introsort_recurs_${KIND_SUFFIX}$${HISTORY_SUFFIX}$
+
+  #:endfor
+  #:endfor
+
+  #!> pivot
+  #:include "pivot.fypp"
+
+
+  #!> partition
+  #:include "partition.fypp"
+
+
+  #!> swap
+  #:include "swap.fypp"
+
+
+  #!> Binary insertion sort
+  #:include "bisort.fypp"
+
+
+  #!> Heap sort
+  #:include "hsort.fypp"
+
+
+  #!> reverse
+  #:include "reverse.fypp"
+end module intro_sort_mod

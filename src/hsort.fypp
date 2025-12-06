@@ -1,51 +1,3 @@
-#:include "common.fypp"
-#ifndef DEFAULT_INT
-#  define DEFAULT_INT int32
-#endif
-#ifndef DEFAULT_REAL
-#  define DEFAULT_REAL real64
-#endif
-
-! #define IS_LARGE_ARRAY
-
-module heap_sort_mod
-  use, intrinsic :: iso_fortran_env
-  implicit none
-  integer(DEFAULT_INT), parameter :: short = int16, long = int32, llong = int64, sp = real32, dp = real64, qp = real128
-
-  character(len=*), parameter :: SORTING_METHOD = 'Heap Sort'
-  private
-  public :: SORTING_METHOD
-
-  interface sort
-  #:for HISTORY_FLAG in HISTORY_FLAGS
-  #:if HISTORY_FLAG
-  #:  set HISTORY_SUFFIX = '_hist'
-  #:else
-  #:  set HISTORY_SUFFIX = ''
-  #:endif
-  #:for KIND in IR_KINDS
-    module procedure hsort_${KIND}$${HISTORY_SUFFIX}$
-  #:endfor
-  #:endfor
-  end interface sort
-
-  interface reverse
-  #:for HISTORY_FLAG in HISTORY_FLAGS
-  #:if HISTORY_FLAG
-  #:  set HISTORY_SUFFIX = '_hist'
-  #:else
-  #:  set HISTORY_SUFFIX = ''
-  #:endif
-  #:for KIND in IR_KINDS
-    module procedure reverse_${KIND}$${HISTORY_SUFFIX}$
-  #:endfor
-  #:endfor
-  end interface reverse
-  public :: sort, reverse
-
-contains
-
   #:for HISTORY_FLAG in HISTORY_FLAGS
   #:if HISTORY_FLAG
   #:  set HISTORY_SUFFIX = '_hist'
@@ -130,10 +82,3 @@ contains
 
   #:endfor
   #:endfor
-
-  #!> swap
-  #:include "swap.fypp"
-
-  #!> reverse
-  #:include "reverse.fypp"
-end module heap_sort_mod
