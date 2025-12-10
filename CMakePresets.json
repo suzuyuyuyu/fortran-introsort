@@ -1,0 +1,60 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 14,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "ifx-release",
+      "displayName": "Intel Fortran (ifx) Release",
+      "description": "Release build using ifx compiler with -O3",
+      "binaryDir": "${sourceDir}/build/ifx-release",
+      "cacheVariables": {
+        "CMAKE_Fortran_COMPILER": "ifx",
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_Fortran_FLAGS_RELEASE": "-O3",
+        "BUILD_EXAMPLES": "OFF"
+      }
+    },
+    {
+      "name": "gfortran-release",
+      "displayName": "GNU Fortran (gfortran) Release",
+      "description": "Release build using gfortran compiler with -O3",
+      "binaryDir": "${sourceDir}/build/gfortran-release",
+      "cacheVariables": {
+        "CMAKE_Fortran_COMPILER": "gfortran",
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_Fortran_FLAGS_RELEASE": "-O3",
+        "BUILD_EXAMPLES": "OFF"
+      }
+    },
+    {
+      "name": "gfortran-debug",
+      "displayName": "GNU Fortran (gfortran) Debug",
+      "description": "Debug build using gfortran with check flags",
+      "binaryDir": "${sourceDir}/build/gfortran-debug",
+      "cacheVariables": {
+        "CMAKE_Fortran_COMPILER": "gfortran",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_Fortran_FLAGS_DEBUG": "-g -Wall -Wextra -fcheck=all -fbacktrace",
+        "BUILD_EXAMPLES": "ON"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "ifx-release",
+      "configurePreset": "ifx-release"
+    },
+    {
+      "name": "gfortran-release",
+      "configurePreset": "gfortran-release"
+    },
+    {
+      "name": "gfortran-debug",
+      "configurePreset": "gfortran-debug"
+    }
+  ]
+}

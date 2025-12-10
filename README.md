@@ -1,52 +1,117 @@
-<h1 align='center'> Fortran Quick Sort </h1>
+<h1 align='center'> Fortran Intro Sort </h1>
 
-A Fortran library that implements the quick sort.
+A Fortran library that implements the introspective sort (introsort).
 
-## Usage
-### 1. Clone this repository.
+## Requirements
 
+- Fortran Compiler (ifx, gfortran, etc.)
+- CMake (>= 3.14)
+
+## Build & Install
+
+This project uses CMake for building. We provide CMake Presets for convenient configuration.
+
+### Using CMake Presets (Recommended)
+
+You can list available presets with:
 ```bash
-git clone https://github.com/suzuyuyuyu/fortran-quicksort.git
+cmake --list-presets
 ```
 
-### 2. Compile the library.
+Common presets:
+- `ifx-release`: Intel Fortran Compiler (ifx), Release build (-O3)
+- `gfortran-release`: GNU Fortran Compiler (gfortran), Release build (-O3)
+- `gfortran-debug`: GNU Fortran Compiler (gfortran), Debug build with checks
+
+#### 1. Configure and Build
 
 ```bash
-cd fortran-quicksort
-make
+# Example: Using ifx (Release)
+cmake --preset ifx-release
+cmake --build --preset ifx-release
 ```
-You can change the compiler, optimization flags, and so on in the `Makefile`.
 
-| Flag | Default Value |
-|--- | --- |
-| `FC` | `ifx` |
-| `FFLAGS` | `-O3` |
-| `AR` | `llvm-ar rcs` |
-| `LIB_OUT_DIR` | `lib` |
-| `INC_OUT_DIR` | `include` |
+#### 2. Install (Optional)
 
-e.g.,
 ```bash
-make FC=gfortran FFLAGS='-O0 -g -Wall -Wextra'
+# Install to system directories (requires sudo)
+sudo cmake --install build/ifx-release
 ```
 
-### 3. Link the library and module in your Fortran code.
+You can change the installation directory using `-DCMAKE_INSTALL_PREFIX` at the configuration step:
+
+```bash
+cmake --preset ifx-release -DCMAKE_INSTALL_PREFIX=./local_install
+cmake --build --preset ifx-release
+cmake --install build/ifx-release
+```
+
+Or override it at the install step:
+
+```bash
+cmake --install build/ifx-release --prefix ./local_install
+```
+
+You can also customize the subdirectory structure (e.g., `lib`, `include`) by setting standard CMake variables or the project-specific `INSTALL_MODULE_DIR`:
+
+```bash
+cmake --preset ifx-release \
+    -DCMAKE_INSTALL_PREFIX=./local_install \
+    -DCMAKE_INSTALL_LIBDIR=my_lib \
+    -DINSTALL_MODULE_DIR=modules
+```
+This will install artifacts to:
+- `./local_install/my_lib/` (Libraries)
+- `./local_install/modules/` (Fortran Modules)
+
+### Build Examples
+
+To build the example programs, set `BUILD_EXAMPLES=ON`.
+
+```bash
+cmake --preset ifx-release -DBUILD_EXAMPLES=ON
+cmake --build --preset ifx-release
+
+# Run the example
+./build/ifx-release/example/example_sort
+```
+
+## Usage in your code
+
+### Fortran Code
 
 ```fortran
 program main
-    use quick_sort_mod
+    use intro_sort_mod
     implicit none
-    ⋮
+    ! ...
+    
+    ! Sort array
     call sort(array)
-    ! or
-    call sort(array, pivot=2.0d0)
-    ! or
-    call sort(array, history, reverse=.true.)
     
-    call reverse(array)
-    
-    ! After sorting
-    corresponding_array = corresponding_array(history)
+    ! Sort with options
+    ! call sort(array, reverse=.true.)
+end program
 ```
 
-To find more details, see the sample code in the `examples` directory.
+To avoid the conflict of subroutine name `sort` or others, you can rename as follows:
+```fortran
+program main
+    use intro_sort_mod, only: introsort => sort
+    implicit none
+    ! ...
+```
+
+### Link and Compile
+You can compile and link your Fortran code with the installed library as follows:
+```bash
+ifx -I<install-path>/include -L<install-path>/lib <src-files> -o <output-executables> -lintrosort
+```
+
+## Directory Structure (Build Artifacts)
+
+After building, the artifacts are located in the build directory (e.g., `build/ifx-release/`):
+
+- `include/`: Module files (`.mod`)
+- `lib/`: Static libraries (`.a`)
+- `example/`: Example executables
