@@ -1,3 +1,8 @@
+! -----------------------------------------------------------------------------
+!  Copyright (c) 2025 Yuta SUZUKI
+!  Released under the MIT License
+!  https://opensource.org/licenses/MIT
+! -----------------------------------------------------------------------------
   #:for HISTORY_FLAG in HISTORY_FLAGS
   #:if HISTORY_FLAG
   #:  set HISTORY_SUFFIX = '_hist'

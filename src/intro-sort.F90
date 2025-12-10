@@ -1,3 +1,8 @@
+! -----------------------------------------------------------------------------
+!  Copyright (c) 2025 Yuta SUZUKI
+!  Released under the MIT License
+!  https://opensource.org/licenses/MIT
+! -----------------------------------------------------------------------------
 #ifndef DEFAULT_INT
 #  define DEFAULT_INT int32
 #endif

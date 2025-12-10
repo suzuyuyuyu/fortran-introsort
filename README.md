@@ -115,3 +115,6 @@ After building, the artifacts are located in the build directory (e.g., `build/i
 - `include/`: Module files (`.mod`)
 - `lib/`: Static libraries (`.a`)
 - `example/`: Example executables
+
+## License
+This software is released under the [MIT License](LICENSE).
