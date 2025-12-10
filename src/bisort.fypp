@@ -17,12 +17,14 @@
     integer(DEFAULT_INT) :: l, r
     ${HISTORY_INTENT}$
     ${ARRAY_TYPE}$ :: key
+    #{if HISTORY_FLAG}#integer(DEFAULT_INT) :: key_hist#{endif}#
     integer(DEFAULT_INT) :: i, j
     integer(DEFAULT_INT) :: low, high, mid, loc
 
     l = lbound(arr, 1); r = ubound(arr, 1)
     do i = l + 1, r
       key = arr(i)
+      #{if HISTORY_FLAG}#key_hist = history(i)#{endif}#
       low = l
       high = i - 1
 
@@ -43,7 +45,7 @@
         #{if HISTORY_FLAG}#history(j + 1) = history(j)#{endif}#
       end do
       arr(loc) = key
-      #{if HISTORY_FLAG}#history(loc) = i#{endif}#
+      #{if HISTORY_FLAG}#history(loc) = key_hist#{endif}#
     end do
   end subroutine bisort_${KIND_SUFFIX}$${HISTORY_SUFFIX}$
   #:endfor

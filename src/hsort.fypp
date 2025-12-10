@@ -45,7 +45,7 @@
       call swap_${KIND_SUFFIX}$${HISTORY_SUFFIX}$(arr, left, left + i - 1${HISTORY_ARG}$)
 
       ! call max heapify on the reduced heap
-      call sift_down(1_DEFAULT_INT, i - 1)
+      call sift_down(1, i - 1)
     end do
 
   contains

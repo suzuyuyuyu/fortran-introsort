@@ -12,7 +12,7 @@ module intro_sort_mod
   implicit none
   integer(DEFAULT_INT), parameter :: short = int16, long = int32, llong = int64, sp = real32, dp = real64, qp = real128
 
-  character(len=*), parameter :: SORTING_METHOD = 'Quick Sort'
+  character(len=*), parameter :: SORTING_METHOD = 'Intro Sort'
   private
   public :: SORTING_METHOD
 
@@ -58,7 +58,7 @@ contains
   subroutine introsort_int8(arr, reverse)
     implicit none
     integer(int8), intent(inout) :: arr(:)
-    
+
     logical, intent(in), optional :: reverse
 
     max_depth = 2 * ceiling(log(real(size(arr), kind=DEFAULT_REAL)) / log(2.0_real64))
@@ -77,7 +77,7 @@ contains
     integer(int8), intent(inout) :: arr(:)
     integer(DEFAULT_INT), intent(in) :: left, right
     integer(DEFAULT_INT), intent(in) :: depth
-    
+
     integer(DEFAULT_INT) :: mid
     integer(DEFAULT_INT) :: pivot_idx
 
@@ -109,7 +109,7 @@ contains
   subroutine introsort_int16(arr, reverse)
     implicit none
     integer(int16), intent(inout) :: arr(:)
-    
+
     logical, intent(in), optional :: reverse
 
     max_depth = 2 * ceiling(log(real(size(arr), kind=DEFAULT_REAL)) / log(2.0_real64))
@@ -128,7 +128,7 @@ contains
     integer(int16), intent(inout) :: arr(:)
     integer(DEFAULT_INT), intent(in) :: left, right
     integer(DEFAULT_INT), intent(in) :: depth
-    
+
     integer(DEFAULT_INT) :: mid
     integer(DEFAULT_INT) :: pivot_idx
 
@@ -160,7 +160,7 @@ contains
   subroutine introsort_int32(arr, reverse)
     implicit none
     integer(int32), intent(inout) :: arr(:)
-    
+
     logical, intent(in), optional :: reverse
 
     max_depth = 2 * ceiling(log(real(size(arr), kind=DEFAULT_REAL)) / log(2.0_real64))
@@ -179,7 +179,7 @@ contains
     integer(int32), intent(inout) :: arr(:)
     integer(DEFAULT_INT), intent(in) :: left, right
     integer(DEFAULT_INT), intent(in) :: depth
-    
+
     integer(DEFAULT_INT) :: mid
     integer(DEFAULT_INT) :: pivot_idx
 
@@ -211,7 +211,7 @@ contains
   subroutine introsort_int64(arr, reverse)
     implicit none
     integer(int64), intent(inout) :: arr(:)
-    
+
     logical, intent(in), optional :: reverse
 
     max_depth = 2 * ceiling(log(real(size(arr), kind=DEFAULT_REAL)) / log(2.0_real64))
@@ -230,7 +230,7 @@ contains
     integer(int64), intent(inout) :: arr(:)
     integer(DEFAULT_INT), intent(in) :: left, right
     integer(DEFAULT_INT), intent(in) :: depth
-    
+
     integer(DEFAULT_INT) :: mid
     integer(DEFAULT_INT) :: pivot_idx
 
@@ -262,7 +262,7 @@ contains
   subroutine introsort_real32(arr, reverse)
     implicit none
     real(real32), intent(inout) :: arr(:)
-    
+
     logical, intent(in), optional :: reverse
 
     max_depth = 2 * ceiling(log(real(size(arr), kind=DEFAULT_REAL)) / log(2.0_real64))
@@ -281,7 +281,7 @@ contains
     real(real32), intent(inout) :: arr(:)
     integer(DEFAULT_INT), intent(in) :: left, right
     integer(DEFAULT_INT), intent(in) :: depth
-    
+
     integer(DEFAULT_INT) :: mid
     integer(DEFAULT_INT) :: pivot_idx
 
@@ -313,7 +313,7 @@ contains
   subroutine introsort_real64(arr, reverse)
     implicit none
     real(real64), intent(inout) :: arr(:)
-    
+
     logical, intent(in), optional :: reverse
 
     max_depth = 2 * ceiling(log(real(size(arr), kind=DEFAULT_REAL)) / log(2.0_real64))
@@ -332,7 +332,7 @@ contains
     real(real64), intent(inout) :: arr(:)
     integer(DEFAULT_INT), intent(in) :: left, right
     integer(DEFAULT_INT), intent(in) :: depth
-    
+
     integer(DEFAULT_INT) :: mid
     integer(DEFAULT_INT) :: pivot_idx
 
@@ -364,7 +364,7 @@ contains
   subroutine introsort_real128(arr, reverse)
     implicit none
     real(real128), intent(inout) :: arr(:)
-    
+
     logical, intent(in), optional :: reverse
 
     max_depth = 2 * ceiling(log(real(size(arr), kind=DEFAULT_REAL)) / log(2.0_real64))
@@ -383,7 +383,7 @@ contains
     real(real128), intent(inout) :: arr(:)
     integer(DEFAULT_INT), intent(in) :: left, right
     integer(DEFAULT_INT), intent(in) :: depth
-    
+
     integer(DEFAULT_INT) :: mid
     integer(DEFAULT_INT) :: pivot_idx
 
@@ -1349,7 +1349,7 @@ contains
   function partition_int8(arr, l, r, pivot) result(new_pivot_idx)
     implicit none
     integer(int8), intent(inout) :: arr(:)
-    
+
     integer(DEFAULT_INT), intent(in) :: l, r
     integer(int8), intent(in) :: pivot
     integer(DEFAULT_INT) :: i, j
@@ -1375,7 +1375,7 @@ contains
   function partition_int16(arr, l, r, pivot) result(new_pivot_idx)
     implicit none
     integer(int16), intent(inout) :: arr(:)
-    
+
     integer(DEFAULT_INT), intent(in) :: l, r
     integer(int16), intent(in) :: pivot
     integer(DEFAULT_INT) :: i, j
@@ -1401,7 +1401,7 @@ contains
   function partition_int32(arr, l, r, pivot) result(new_pivot_idx)
     implicit none
     integer(int32), intent(inout) :: arr(:)
-    
+
     integer(DEFAULT_INT), intent(in) :: l, r
     integer(int32), intent(in) :: pivot
     integer(DEFAULT_INT) :: i, j
@@ -1427,7 +1427,7 @@ contains
   function partition_int64(arr, l, r, pivot) result(new_pivot_idx)
     implicit none
     integer(int64), intent(inout) :: arr(:)
-    
+
     integer(DEFAULT_INT), intent(in) :: l, r
     integer(int64), intent(in) :: pivot
     integer(DEFAULT_INT) :: i, j
@@ -1453,7 +1453,7 @@ contains
   function partition_real32(arr, l, r, pivot) result(new_pivot_idx)
     implicit none
     real(real32), intent(inout) :: arr(:)
-    
+
     integer(DEFAULT_INT), intent(in) :: l, r
     real(real32), intent(in) :: pivot
     integer(DEFAULT_INT) :: i, j
@@ -1479,7 +1479,7 @@ contains
   function partition_real64(arr, l, r, pivot) result(new_pivot_idx)
     implicit none
     real(real64), intent(inout) :: arr(:)
-    
+
     integer(DEFAULT_INT), intent(in) :: l, r
     real(real64), intent(in) :: pivot
     integer(DEFAULT_INT) :: i, j
@@ -1505,7 +1505,7 @@ contains
   function partition_real128(arr, l, r, pivot) result(new_pivot_idx)
     implicit none
     real(real128), intent(inout) :: arr(:)
-    
+
     integer(DEFAULT_INT), intent(in) :: l, r
     real(real128), intent(in) :: pivot
     integer(DEFAULT_INT) :: i, j
@@ -1715,10 +1715,10 @@ contains
   subroutine swap_int8(arr, i, j)
     implicit none
     integer(int8), intent(inout) :: arr(:)
-    
+
     integer, intent(in) :: i, j
     integer(int8) :: temp
-    
+
     temp = arr(i)
     arr(i) = arr(j)
     arr(j) = temp
@@ -1726,10 +1726,10 @@ contains
   subroutine swap_int16(arr, i, j)
     implicit none
     integer(int16), intent(inout) :: arr(:)
-    
+
     integer, intent(in) :: i, j
     integer(int16) :: temp
-    
+
     temp = arr(i)
     arr(i) = arr(j)
     arr(j) = temp
@@ -1737,10 +1737,10 @@ contains
   subroutine swap_int32(arr, i, j)
     implicit none
     integer(int32), intent(inout) :: arr(:)
-    
+
     integer, intent(in) :: i, j
     integer(int32) :: temp
-    
+
     temp = arr(i)
     arr(i) = arr(j)
     arr(j) = temp
@@ -1748,10 +1748,10 @@ contains
   subroutine swap_int64(arr, i, j)
     implicit none
     integer(int64), intent(inout) :: arr(:)
-    
+
     integer, intent(in) :: i, j
     integer(int64) :: temp
-    
+
     temp = arr(i)
     arr(i) = arr(j)
     arr(j) = temp
@@ -1759,10 +1759,10 @@ contains
   subroutine swap_real32(arr, i, j)
     implicit none
     real(real32), intent(inout) :: arr(:)
-    
+
     integer, intent(in) :: i, j
     real(real32) :: temp
-    
+
     temp = arr(i)
     arr(i) = arr(j)
     arr(j) = temp
@@ -1770,10 +1770,10 @@ contains
   subroutine swap_real64(arr, i, j)
     implicit none
     real(real64), intent(inout) :: arr(:)
-    
+
     integer, intent(in) :: i, j
     real(real64) :: temp
-    
+
     temp = arr(i)
     arr(i) = arr(j)
     arr(j) = temp
@@ -1781,10 +1781,10 @@ contains
   subroutine swap_real128(arr, i, j)
     implicit none
     real(real128), intent(inout) :: arr(:)
-    
+
     integer, intent(in) :: i, j
     real(real128) :: temp
-    
+
     temp = arr(i)
     arr(i) = arr(j)
     arr(j) = temp
@@ -1893,7 +1893,7 @@ contains
     implicit none
     integer(int8), intent(inout) :: arr(:)
     integer(DEFAULT_INT) :: l, r
-    
+
     integer(int8) :: key
     integer(DEFAULT_INT) :: i, j
     integer(DEFAULT_INT) :: low, high, mid, loc
@@ -1916,17 +1916,17 @@ contains
 
       do j = i - 1, loc, -1
         arr(j + 1) = arr(j)
-        
+
       end do
       arr(loc) = key
-      
+
     end do
   end subroutine bisort_int8
   subroutine bisort_int16(arr)
     implicit none
     integer(int16), intent(inout) :: arr(:)
     integer(DEFAULT_INT) :: l, r
-    
+
     integer(int16) :: key
     integer(DEFAULT_INT) :: i, j
     integer(DEFAULT_INT) :: low, high, mid, loc
@@ -1949,17 +1949,17 @@ contains
 
       do j = i - 1, loc, -1
         arr(j + 1) = arr(j)
-        
+
       end do
       arr(loc) = key
-      
+
     end do
   end subroutine bisort_int16
   subroutine bisort_int32(arr)
     implicit none
     integer(int32), intent(inout) :: arr(:)
     integer(DEFAULT_INT) :: l, r
-    
+
     integer(int32) :: key
     integer(DEFAULT_INT) :: i, j
     integer(DEFAULT_INT) :: low, high, mid, loc
@@ -1982,17 +1982,17 @@ contains
 
       do j = i - 1, loc, -1
         arr(j + 1) = arr(j)
-        
+
       end do
       arr(loc) = key
-      
+
     end do
   end subroutine bisort_int32
   subroutine bisort_int64(arr)
     implicit none
     integer(int64), intent(inout) :: arr(:)
     integer(DEFAULT_INT) :: l, r
-    
+
     integer(int64) :: key
     integer(DEFAULT_INT) :: i, j
     integer(DEFAULT_INT) :: low, high, mid, loc
@@ -2015,17 +2015,17 @@ contains
 
       do j = i - 1, loc, -1
         arr(j + 1) = arr(j)
-        
+
       end do
       arr(loc) = key
-      
+
     end do
   end subroutine bisort_int64
   subroutine bisort_real32(arr)
     implicit none
     real(real32), intent(inout) :: arr(:)
     integer(DEFAULT_INT) :: l, r
-    
+
     real(real32) :: key
     integer(DEFAULT_INT) :: i, j
     integer(DEFAULT_INT) :: low, high, mid, loc
@@ -2048,17 +2048,17 @@ contains
 
       do j = i - 1, loc, -1
         arr(j + 1) = arr(j)
-        
+
       end do
       arr(loc) = key
-      
+
     end do
   end subroutine bisort_real32
   subroutine bisort_real64(arr)
     implicit none
     real(real64), intent(inout) :: arr(:)
     integer(DEFAULT_INT) :: l, r
-    
+
     real(real64) :: key
     integer(DEFAULT_INT) :: i, j
     integer(DEFAULT_INT) :: low, high, mid, loc
@@ -2081,17 +2081,17 @@ contains
 
       do j = i - 1, loc, -1
         arr(j + 1) = arr(j)
-        
+
       end do
       arr(loc) = key
-      
+
     end do
   end subroutine bisort_real64
   subroutine bisort_real128(arr)
     implicit none
     real(real128), intent(inout) :: arr(:)
     integer(DEFAULT_INT) :: l, r
-    
+
     real(real128) :: key
     integer(DEFAULT_INT) :: i, j
     integer(DEFAULT_INT) :: low, high, mid, loc
@@ -2114,10 +2114,10 @@ contains
 
       do j = i - 1, loc, -1
         arr(j + 1) = arr(j)
-        
+
       end do
       arr(loc) = key
-      
+
     end do
   end subroutine bisort_real128
   subroutine bisort_int8_hist(arr, history)
@@ -2356,7 +2356,7 @@ contains
   subroutine hsort_int8(arr, reverse)
     implicit none
     integer(int8), intent(inout) :: arr(:)
-    
+
     logical, intent(in), optional :: reverse
 
     call hsort_recurs_int8(arr, 1, size(arr))
@@ -2372,7 +2372,7 @@ contains
     implicit none
     integer(int8), intent(inout) :: arr(:)
     integer(DEFAULT_INT), intent(in) :: left, right
-    
+
     integer(DEFAULT_INT) :: i, n
 
     n = right - left + 1
@@ -2389,7 +2389,7 @@ contains
       call swap_int8(arr, left, left + i - 1)
 
       ! call max heapify on the reduced heap
-      call sift_down(1_int32, i - 1)
+      call sift_down(1, i - 1)
     end do
 
   contains
@@ -2427,7 +2427,7 @@ contains
   subroutine hsort_int16(arr, reverse)
     implicit none
     integer(int16), intent(inout) :: arr(:)
-    
+
     logical, intent(in), optional :: reverse
 
     call hsort_recurs_int16(arr, 1, size(arr))
@@ -2443,7 +2443,7 @@ contains
     implicit none
     integer(int16), intent(inout) :: arr(:)
     integer(DEFAULT_INT), intent(in) :: left, right
-    
+
     integer(DEFAULT_INT) :: i, n
 
     n = right - left + 1
@@ -2460,7 +2460,7 @@ contains
       call swap_int16(arr, left, left + i - 1)
 
       ! call max heapify on the reduced heap
-      call sift_down(1_int32, i - 1)
+      call sift_down(1, i - 1)
     end do
 
   contains
@@ -2498,7 +2498,7 @@ contains
   subroutine hsort_int32(arr, reverse)
     implicit none
     integer(int32), intent(inout) :: arr(:)
-    
+
     logical, intent(in), optional :: reverse
 
     call hsort_recurs_int32(arr, 1, size(arr))
@@ -2514,7 +2514,7 @@ contains
     implicit none
     integer(int32), intent(inout) :: arr(:)
     integer(DEFAULT_INT), intent(in) :: left, right
-    
+
     integer(DEFAULT_INT) :: i, n
 
     n = right - left + 1
@@ -2531,7 +2531,7 @@ contains
       call swap_int32(arr, left, left + i - 1)
 
       ! call max heapify on the reduced heap
-      call sift_down(1_int32, i - 1)
+      call sift_down(1, i - 1)
     end do
 
   contains
@@ -2569,7 +2569,7 @@ contains
   subroutine hsort_int64(arr, reverse)
     implicit none
     integer(int64), intent(inout) :: arr(:)
-    
+
     logical, intent(in), optional :: reverse
 
     call hsort_recurs_int64(arr, 1, size(arr))
@@ -2585,7 +2585,7 @@ contains
     implicit none
     integer(int64), intent(inout) :: arr(:)
     integer(DEFAULT_INT), intent(in) :: left, right
-    
+
     integer(DEFAULT_INT) :: i, n
 
     n = right - left + 1
@@ -2602,7 +2602,7 @@ contains
       call swap_int64(arr, left, left + i - 1)
 
       ! call max heapify on the reduced heap
-      call sift_down(1_int32, i - 1)
+      call sift_down(1, i - 1)
     end do
 
   contains
@@ -2640,7 +2640,7 @@ contains
   subroutine hsort_real32(arr, reverse)
     implicit none
     real(real32), intent(inout) :: arr(:)
-    
+
     logical, intent(in), optional :: reverse
 
     call hsort_recurs_real32(arr, 1, size(arr))
@@ -2656,7 +2656,7 @@ contains
     implicit none
     real(real32), intent(inout) :: arr(:)
     integer(DEFAULT_INT), intent(in) :: left, right
-    
+
     integer(DEFAULT_INT) :: i, n
 
     n = right - left + 1
@@ -2673,7 +2673,7 @@ contains
       call swap_real32(arr, left, left + i - 1)
 
       ! call max heapify on the reduced heap
-      call sift_down(1_int32, i - 1)
+      call sift_down(1, i - 1)
     end do
 
   contains
@@ -2711,7 +2711,7 @@ contains
   subroutine hsort_real64(arr, reverse)
     implicit none
     real(real64), intent(inout) :: arr(:)
-    
+
     logical, intent(in), optional :: reverse
 
     call hsort_recurs_real64(arr, 1, size(arr))
@@ -2727,7 +2727,7 @@ contains
     implicit none
     real(real64), intent(inout) :: arr(:)
     integer(DEFAULT_INT), intent(in) :: left, right
-    
+
     integer(DEFAULT_INT) :: i, n
 
     n = right - left + 1
@@ -2744,7 +2744,7 @@ contains
       call swap_real64(arr, left, left + i - 1)
 
       ! call max heapify on the reduced heap
-      call sift_down(1_int32, i - 1)
+      call sift_down(1, i - 1)
     end do
 
   contains
@@ -2782,7 +2782,7 @@ contains
   subroutine hsort_real128(arr, reverse)
     implicit none
     real(real128), intent(inout) :: arr(:)
-    
+
     logical, intent(in), optional :: reverse
 
     call hsort_recurs_real128(arr, 1, size(arr))
@@ -2798,7 +2798,7 @@ contains
     implicit none
     real(real128), intent(inout) :: arr(:)
     integer(DEFAULT_INT), intent(in) :: left, right
-    
+
     integer(DEFAULT_INT) :: i, n
 
     n = right - left + 1
@@ -2815,7 +2815,7 @@ contains
       call swap_real128(arr, left, left + i - 1)
 
       ! call max heapify on the reduced heap
-      call sift_down(1_int32, i - 1)
+      call sift_down(1, i - 1)
     end do
 
   contains
@@ -2886,7 +2886,7 @@ contains
       call swap_int8_hist(arr, left, left + i - 1, history)
 
       ! call max heapify on the reduced heap
-      call sift_down(1_int32, i - 1)
+      call sift_down(1, i - 1)
     end do
 
   contains
@@ -2957,7 +2957,7 @@ contains
       call swap_int16_hist(arr, left, left + i - 1, history)
 
       ! call max heapify on the reduced heap
-      call sift_down(1_int32, i - 1)
+      call sift_down(1, i - 1)
     end do
 
   contains
@@ -3028,7 +3028,7 @@ contains
       call swap_int32_hist(arr, left, left + i - 1, history)
 
       ! call max heapify on the reduced heap
-      call sift_down(1_int32, i - 1)
+      call sift_down(1, i - 1)
     end do
 
   contains
@@ -3099,7 +3099,7 @@ contains
       call swap_int64_hist(arr, left, left + i - 1, history)
 
       ! call max heapify on the reduced heap
-      call sift_down(1_int32, i - 1)
+      call sift_down(1, i - 1)
     end do
 
   contains
@@ -3170,7 +3170,7 @@ contains
       call swap_real32_hist(arr, left, left + i - 1, history)
 
       ! call max heapify on the reduced heap
-      call sift_down(1_int32, i - 1)
+      call sift_down(1, i - 1)
     end do
 
   contains
@@ -3241,7 +3241,7 @@ contains
       call swap_real64_hist(arr, left, left + i - 1, history)
 
       ! call max heapify on the reduced heap
-      call sift_down(1_int32, i - 1)
+      call sift_down(1, i - 1)
     end do
 
   contains
@@ -3312,7 +3312,7 @@ contains
       call swap_real128_hist(arr, left, left + i - 1, history)
 
       ! call max heapify on the reduced heap
-      call sift_down(1_int32, i - 1)
+      call sift_down(1, i - 1)
     end do
 
   contains
@@ -3352,10 +3352,10 @@ contains
   subroutine reverse_int8(arr)
     implicit none
     integer(int8), intent(inout) :: arr(:)
-    
+
     integer :: l, r
     integer(int8) :: temp
-    
+
     integer :: i
     l = lbound(arr, 1); r = ubound(arr, 1)
     do i = l, (r + l) / 2
@@ -3367,10 +3367,10 @@ contains
   subroutine reverse_int16(arr)
     implicit none
     integer(int16), intent(inout) :: arr(:)
-    
+
     integer :: l, r
     integer(int16) :: temp
-    
+
     integer :: i
     l = lbound(arr, 1); r = ubound(arr, 1)
     do i = l, (r + l) / 2
@@ -3382,10 +3382,10 @@ contains
   subroutine reverse_int32(arr)
     implicit none
     integer(int32), intent(inout) :: arr(:)
-    
+
     integer :: l, r
     integer(int32) :: temp
-    
+
     integer :: i
     l = lbound(arr, 1); r = ubound(arr, 1)
     do i = l, (r + l) / 2
@@ -3397,10 +3397,10 @@ contains
   subroutine reverse_int64(arr)
     implicit none
     integer(int64), intent(inout) :: arr(:)
-    
+
     integer :: l, r
     integer(int64) :: temp
-    
+
     integer :: i
     l = lbound(arr, 1); r = ubound(arr, 1)
     do i = l, (r + l) / 2
@@ -3412,10 +3412,10 @@ contains
   subroutine reverse_real32(arr)
     implicit none
     real(real32), intent(inout) :: arr(:)
-    
+
     integer :: l, r
     real(real32) :: temp
-    
+
     integer :: i
     l = lbound(arr, 1); r = ubound(arr, 1)
     do i = l, (r + l) / 2
@@ -3427,10 +3427,10 @@ contains
   subroutine reverse_real64(arr)
     implicit none
     real(real64), intent(inout) :: arr(:)
-    
+
     integer :: l, r
     real(real64) :: temp
-    
+
     integer :: i
     l = lbound(arr, 1); r = ubound(arr, 1)
     do i = l, (r + l) / 2
@@ -3442,10 +3442,10 @@ contains
   subroutine reverse_real128(arr)
     implicit none
     real(real128), intent(inout) :: arr(:)
-    
+
     integer :: l, r
     real(real128) :: temp
-    
+
     integer :: i
     l = lbound(arr, 1); r = ubound(arr, 1)
     do i = l, (r + l) / 2
