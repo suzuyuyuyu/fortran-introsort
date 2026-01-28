@@ -91,12 +91,12 @@ contains
     integer(DEFAULT_INT) :: pivot_idx
 
     if (right - left + 1 <= 16) then
-      call bisort_${KIND_SUFFIX}$${HISTORY_SUFFIX}$(arr(left:right)${HISTORY_ARG}$)
+      call bisort_${KIND_SUFFIX}$${HISTORY_SUFFIX}$(arr(left:right)${HISTORY_ARG}$#{if HISTORY_FLAG}#(left:right)#{endif}#)
       return
     end if
 
     if (depth >= max_depth) then
-      call hsort_${KIND_SUFFIX}$${HISTORY_SUFFIX}$(arr(left:right)${HISTORY_ARG}$)
+      call hsort_${KIND_SUFFIX}$${HISTORY_SUFFIX}$(arr(left:right)${HISTORY_ARG}$#{if HISTORY_FLAG}#(left:right)#{endif}#)
       return
     end if
 
