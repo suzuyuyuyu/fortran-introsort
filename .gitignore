@@ -31,3 +31,6 @@ lib/
 bin/
 obj/
 lib64/
+
+CMakeUserPresets.json
+.buildconfig

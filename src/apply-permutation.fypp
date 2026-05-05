@@ -1,0 +1,17 @@
+  #:for KIND_SUFFIX, ARRAY_TYPE in IR_KINDS_TYPES
+  subroutine apply_permutation_${KIND_SUFFIX}$(corresp, permutation)
+    implicit none
+    ${ARRAY_TYPE}$, intent(inout) :: corresp(:)
+    integer(DEFAULT_INT), intent(in) :: permutation(:)
+    integer(DEFAULT_INT) :: size_corresp, size_swap_hist
+    ${ARRAY_TYPE}$, allocatable :: temp(:)
+#   if defined(SAFE_MODE)
+    if (size(corresp) /= size(permutation)) then
+      write(*,'(a)') "Error: Size of corresp and permutation must be the same."
+      stop 1
+    end if
+#   endif
+    temp = corresp(:)
+    corresp(:) = temp(permutation(:))
+  end subroutine apply_permutation_${KIND_SUFFIX}$
+  #:endfor

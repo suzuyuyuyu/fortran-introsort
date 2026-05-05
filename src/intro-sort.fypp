@@ -49,6 +49,13 @@ module mod_introsort
   end interface reverse
   public :: sort, reverse
 
+  interface apply_permutation
+  #:for KIND in IR_KINDS
+    module procedure apply_permutation_${KIND}$
+  #:endfor
+  end interface apply_permutation
+  public :: apply_permutation
+
   integer(DEFAULT_INT) :: max_depth
 
 contains
@@ -140,4 +147,7 @@ contains
 
   #!> reverse
   #:include "reverse.fypp"
+
+  #!> apply_permutation
+  #:include "apply-permutation.fypp"
 end module mod_introsort

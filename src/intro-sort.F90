@@ -56,6 +56,17 @@ module mod_introsort
   end interface reverse
   public :: sort, reverse
 
+  interface apply_permutation
+    module procedure apply_permutation_int8
+    module procedure apply_permutation_int16
+    module procedure apply_permutation_int32
+    module procedure apply_permutation_int64
+    module procedure apply_permutation_real32
+    module procedure apply_permutation_real64
+    module procedure apply_permutation_real128
+  end interface apply_permutation
+  public :: apply_permutation
+
   integer(DEFAULT_INT) :: max_depth
 
 contains
@@ -3623,4 +3634,110 @@ contains
       history(r + l - i) = temp_hist
     end do
   end subroutine reverse_real128_hist
+
+  subroutine apply_permutation_int8(corresp, permutation)
+    implicit none
+    integer(int8), intent(inout) :: corresp(:)
+    integer(DEFAULT_INT), intent(in) :: permutation(:)
+    integer(DEFAULT_INT) :: size_corresp, size_swap_hist
+    integer(int8), allocatable :: temp(:)
+#   if defined(SAFE_MODE)
+    if (size(corresp) /= size(permutation)) then
+      write(*,'(a)') "Error: Size of corresp and permutation must be the same."
+      stop 1
+    end if
+#   endif
+    temp = corresp(:)
+    corresp(:) = temp(permutation(:))
+  end subroutine apply_permutation_int8
+  subroutine apply_permutation_int16(corresp, permutation)
+    implicit none
+    integer(int16), intent(inout) :: corresp(:)
+    integer(DEFAULT_INT), intent(in) :: permutation(:)
+    integer(DEFAULT_INT) :: size_corresp, size_swap_hist
+    integer(int16), allocatable :: temp(:)
+#   if defined(SAFE_MODE)
+    if (size(corresp) /= size(permutation)) then
+      write(*,'(a)') "Error: Size of corresp and permutation must be the same."
+      stop 1
+    end if
+#   endif
+    temp = corresp(:)
+    corresp(:) = temp(permutation(:))
+  end subroutine apply_permutation_int16
+  subroutine apply_permutation_int32(corresp, permutation)
+    implicit none
+    integer(int32), intent(inout) :: corresp(:)
+    integer(DEFAULT_INT), intent(in) :: permutation(:)
+    integer(DEFAULT_INT) :: size_corresp, size_swap_hist
+    integer(int32), allocatable :: temp(:)
+#   if defined(SAFE_MODE)
+    if (size(corresp) /= size(permutation)) then
+      write(*,'(a)') "Error: Size of corresp and permutation must be the same."
+      stop 1
+    end if
+#   endif
+    temp = corresp(:)
+    corresp(:) = temp(permutation(:))
+  end subroutine apply_permutation_int32
+  subroutine apply_permutation_int64(corresp, permutation)
+    implicit none
+    integer(int64), intent(inout) :: corresp(:)
+    integer(DEFAULT_INT), intent(in) :: permutation(:)
+    integer(DEFAULT_INT) :: size_corresp, size_swap_hist
+    integer(int64), allocatable :: temp(:)
+#   if defined(SAFE_MODE)
+    if (size(corresp) /= size(permutation)) then
+      write(*,'(a)') "Error: Size of corresp and permutation must be the same."
+      stop 1
+    end if
+#   endif
+    temp = corresp(:)
+    corresp(:) = temp(permutation(:))
+  end subroutine apply_permutation_int64
+  subroutine apply_permutation_real32(corresp, permutation)
+    implicit none
+    real(real32), intent(inout) :: corresp(:)
+    integer(DEFAULT_INT), intent(in) :: permutation(:)
+    integer(DEFAULT_INT) :: size_corresp, size_swap_hist
+    real(real32), allocatable :: temp(:)
+#   if defined(SAFE_MODE)
+    if (size(corresp) /= size(permutation)) then
+      write(*,'(a)') "Error: Size of corresp and permutation must be the same."
+      stop 1
+    end if
+#   endif
+    temp = corresp(:)
+    corresp(:) = temp(permutation(:))
+  end subroutine apply_permutation_real32
+  subroutine apply_permutation_real64(corresp, permutation)
+    implicit none
+    real(real64), intent(inout) :: corresp(:)
+    integer(DEFAULT_INT), intent(in) :: permutation(:)
+    integer(DEFAULT_INT) :: size_corresp, size_swap_hist
+    real(real64), allocatable :: temp(:)
+#   if defined(SAFE_MODE)
+    if (size(corresp) /= size(permutation)) then
+      write(*,'(a)') "Error: Size of corresp and permutation must be the same."
+      stop 1
+    end if
+#   endif
+    temp = corresp(:)
+    corresp(:) = temp(permutation(:))
+  end subroutine apply_permutation_real64
+  subroutine apply_permutation_real128(corresp, permutation)
+    implicit none
+    real(real128), intent(inout) :: corresp(:)
+    integer(DEFAULT_INT), intent(in) :: permutation(:)
+    integer(DEFAULT_INT) :: size_corresp, size_swap_hist
+    real(real128), allocatable :: temp(:)
+#   if defined(SAFE_MODE)
+    if (size(corresp) /= size(permutation)) then
+      write(*,'(a)') "Error: Size of corresp and permutation must be the same."
+      stop 1
+    end if
+#   endif
+    temp = corresp(:)
+    corresp(:) = temp(permutation(:))
+  end subroutine apply_permutation_real128
 end module mod_introsort

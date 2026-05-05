@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 
-project(fortran_introsort VERSION 1.0.0 LANGUAGES Fortran)
+project(fortran_introsort VERSION 1.0.1 LANGUAGES Fortran)
 
 if (CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     set(CMAKE_INSTALL_PREFIX "." CACHE PATH "Default install prefix" FORCE)

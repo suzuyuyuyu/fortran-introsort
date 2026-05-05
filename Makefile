@@ -1,46 +1,59 @@
-include ./common/mod_out_flag.mk
-# compiler and flags
-FC=ifx
-FFLAGS=-O3
-# FFLAGS+=-Wall -Wextra -g -fbacktrace -fbounds-check -ffpe-trap=invalid,zero,overflow
-AR=llvm-ar rcs
+# ============================================================
+#  GNU Make wrapper for fortran-introsort
+#
+#  Quick start:
+#    make config [FC=gfortran|ifx] [PREFIX=~/.local] [BUILD_TYPE=Release|Debug]
+#    make
+#    make install
+# ============================================================
 
-LIB_OUT_DIR=lib
-INC_OUT_DIR=include
-FFLAGS+=$(call mod_out_flag,$(FC),$(INC_OUT_DIR))
+-include .buildconfig
 
-SRC_DIR=src
-INC_DIR=$(SRC_DIR)/include
-OBJ_DIR=$(SRC_DIR)/obj
+FC         ?= gfortran
+PREFIX     ?= $(HOME)/.local
+BUILD_TYPE ?= Release
+FYPP       ?= fypp
 
-.SUFFIXES: .o .F90 .f90 .mod
-TARGET=libsort.a
-TARGET_FULLPATH=$(LIB_OUT_DIR)/$(TARGET)
+FC_NAME   := $(notdir $(FC))
+BUILD_DIR ?= build/$(FC_NAME)-$(shell echo '$(BUILD_TYPE)' | tr '[:upper:]' '[:lower:]')
 
-FILE_BASE=\
-	quick-sort
+FYPP_MAIN := src/intro-sort.fypp
+F90_MAIN  := src/intro-sort.F90
+FYPP_DEPS := $(wildcard src/*.fypp)
 
-SRC=$(SRC_DIR)/$(FILE_BASE).F90
-OBJ=$(patsubst $(SRC_DIR)/%.F90,$(OBJ_DIR)/%.o,$(SRC))
+.PHONY: all config build install clean distclean help
 
-# default main target
-all: _MKDIR $(TARGET_FULLPATH)
+all: build
 
-# archive
-$(TARGET_FULLPATH): $(OBJ)
-	$(AR) $(TARGET_FULLPATH) $(OBJ)
+# fypp preprocessing: re-runs when any .fypp file is newer than the .F90
+$(F90_MAIN): $(FYPP_DEPS)
+	$(FYPP) $(FYPP_MAIN) $@
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.F90
-	$(FC) $(FFLAGS) -c $< -o $@
+config: $(F90_MAIN)
+	@printf 'FC=%s\nPREFIX=%s\nBUILD_TYPE=%s\nBUILD_DIR=%s\n' \
+		'$(FC)' '$(PREFIX)' '$(BUILD_TYPE)' '$(BUILD_DIR)' >| .buildconfig
+	cmake -S . -B $(BUILD_DIR) \
+		-DCMAKE_Fortran_COMPILER=$(FC) \
+		-DCMAKE_BUILD_TYPE=$(BUILD_TYPE) \
+		-DCMAKE_INSTALL_PREFIX=$(PREFIX)
 
-_MKDIR:
-	mkdir -p $(LIB_OUT_DIR) $(INC_OUT_DIR) $(OBJ_DIR)
+build: $(F90_MAIN)
+	cmake --build $(BUILD_DIR) --parallel
 
-.PHONY: clean
-clean: clean-file clean-dir
+install: build
+	cmake --install $(BUILD_DIR) --prefix $(PREFIX)
 
-clean-file:
-	rm -rf $(TARGET_FULLPATH) $(OBJ) $(INC_OUT_DIR)/*.mod
+clean:
+	cmake --build $(BUILD_DIR) --target clean 2>/dev/null || true
 
-clean-dir:
-	rmdir $(LIB_OUT_DIR) $(INC_OUT_DIR) $(OBJ_DIR) 2>/dev/null || true
+distclean:
+	rm -rf build .buildconfig
+	rm -f $(F90_MAIN)
+
+help:
+	@printf '\nUsage:\n'
+	@printf '  make config [FC=gfortran|ifx] [PREFIX=~/.local] [BUILD_TYPE=Release|Debug]\n'
+	@printf '  make [build]\n'
+	@printf '  make install [PREFIX=<dir>]      # PREFIX overrides configured value\n'
+	@printf '  make clean\n'
+	@printf '  make distclean                   # removes build/ and generated .F90\n\n'

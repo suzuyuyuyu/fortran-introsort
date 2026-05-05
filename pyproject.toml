@@ -1,6 +1,6 @@
 [project]
 name = "fortran-introsort"
-version = "1.0.0"
+version = "1.0.1"
 description = "A Fortran implementation of the introsort sorting algorithm."
 readme = "README.md"
 requires-python = ">=3.10"
