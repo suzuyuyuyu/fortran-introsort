@@ -1,7 +1,7 @@
 #include "check.inc"
 program main
   use, intrinsic :: iso_fortran_env
-  use intro_sort_mod
+  use mod_introsort
   implicit none
   integer :: i, m, n
   integer, allocatable :: arr(:), twod_arr(:, :), hist(:)

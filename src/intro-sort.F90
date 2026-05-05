@@ -12,7 +12,7 @@
 
 ! #define IS_LARGE_ARRAY
 
-module intro_sort_mod
+module mod_introsort
   use, intrinsic :: iso_fortran_env
   implicit none
   integer(DEFAULT_INT), parameter :: short = int16, long = int32, llong = int64, sp = real32, dp = real64, qp = real128
@@ -3623,4 +3623,4 @@ contains
       history(r + l - i) = temp_hist
     end do
   end subroutine reverse_real128_hist
-end module intro_sort_mod
+end module mod_introsort

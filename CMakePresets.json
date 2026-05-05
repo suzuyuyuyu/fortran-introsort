@@ -15,7 +15,8 @@
         "CMAKE_Fortran_COMPILER": "ifx",
         "CMAKE_BUILD_TYPE": "Release",
         "CMAKE_Fortran_FLAGS_RELEASE": "-O3",
-        "BUILD_EXAMPLES": "OFF"
+        "BUILD_EXAMPLES": "OFF",
+        "CMAKE_INSTALL_PREFIX": "$env{HOME}/.local/opt/intel/introsort_f"
       }
     },
     {
@@ -27,7 +28,8 @@
         "CMAKE_Fortran_COMPILER": "gfortran",
         "CMAKE_BUILD_TYPE": "Release",
         "CMAKE_Fortran_FLAGS_RELEASE": "-O3",
-        "BUILD_EXAMPLES": "OFF"
+        "BUILD_EXAMPLES": "OFF",
+        "CMAKE_INSTALL_PREFIX": "$env{HOME}/.local/opt/gnu/introsort_f"
       }
     },
     {
